@@ -72,4 +72,4 @@ Below is a list of planned ML projects, each with a description, the approach (f
 
 ## License 
 
-This project is licensed under the MIT License (LICENSE). See the [LICENSE](https://github.com/LoqmanSamani/ml-with-cpp/license](https://github.com/LoqmanSamani/ml-with-cpp/blob/systembiology/LICENSE)) for details.
+This project is licensed under the MIT License ([LICENSE](https://github.com/LoqmanSamani/ml-with-cpp/license](https://github.com/LoqmanSamani/ml-with-cpp/blob/systembiology/LICENSE)) for details.
