@@ -1,0 +1,8 @@
+[
+{
+  "directory": "/home/loqman/Downloads/cproj/ml-with-cpp/linear_regression/build",
+  "command": "/usr/bin/g++  -isystem /usr/include/eigen3 -g -std=gnu++17 -o CMakeFiles/linear_regression.dir/main.cpp.o -c /home/loqman/Downloads/cproj/ml-with-cpp/linear_regression/main.cpp",
+  "file": "/home/loqman/Downloads/cproj/ml-with-cpp/linear_regression/main.cpp",
+  "output": "CMakeFiles/linear_regression.dir/main.cpp.o"
+}
+]
