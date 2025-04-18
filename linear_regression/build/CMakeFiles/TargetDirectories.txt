@@ -1,3 +1,0 @@
-/home/loqman/Downloads/cproj/ml-with-cpp/linear_regression/build/CMakeFiles/linear_regression.dir
-/home/loqman/Downloads/cproj/ml-with-cpp/linear_regression/build/CMakeFiles/edit_cache.dir
-/home/loqman/Downloads/cproj/ml-with-cpp/linear_regression/build/CMakeFiles/rebuild_cache.dir
