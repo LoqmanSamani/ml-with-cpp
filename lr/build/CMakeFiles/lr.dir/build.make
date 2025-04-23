@@ -69,28 +69,28 @@ include CMakeFiles/lr.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/lr.dir/flags.make
 
-CMakeFiles/lr.dir/main.cpp.o: CMakeFiles/lr.dir/flags.make
-CMakeFiles/lr.dir/main.cpp.o: /home/loqman/Downloads/cproj/ml-with-cpp/lr/main.cpp
-CMakeFiles/lr.dir/main.cpp.o: CMakeFiles/lr.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/loqman/Downloads/cproj/ml-with-cpp/lr/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/lr.dir/main.cpp.o"
-	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/lr.dir/main.cpp.o -MF CMakeFiles/lr.dir/main.cpp.o.d -o CMakeFiles/lr.dir/main.cpp.o -c /home/loqman/Downloads/cproj/ml-with-cpp/lr/main.cpp
+CMakeFiles/lr.dir/src/main.cpp.o: CMakeFiles/lr.dir/flags.make
+CMakeFiles/lr.dir/src/main.cpp.o: /home/loqman/Downloads/cproj/ml-with-cpp/lr/src/main.cpp
+CMakeFiles/lr.dir/src/main.cpp.o: CMakeFiles/lr.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/loqman/Downloads/cproj/ml-with-cpp/lr/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/lr.dir/src/main.cpp.o"
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/lr.dir/src/main.cpp.o -MF CMakeFiles/lr.dir/src/main.cpp.o.d -o CMakeFiles/lr.dir/src/main.cpp.o -c /home/loqman/Downloads/cproj/ml-with-cpp/lr/src/main.cpp
 
-CMakeFiles/lr.dir/main.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/lr.dir/main.cpp.i"
-	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/loqman/Downloads/cproj/ml-with-cpp/lr/main.cpp > CMakeFiles/lr.dir/main.cpp.i
+CMakeFiles/lr.dir/src/main.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/lr.dir/src/main.cpp.i"
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/loqman/Downloads/cproj/ml-with-cpp/lr/src/main.cpp > CMakeFiles/lr.dir/src/main.cpp.i
 
-CMakeFiles/lr.dir/main.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/lr.dir/main.cpp.s"
-	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/loqman/Downloads/cproj/ml-with-cpp/lr/main.cpp -o CMakeFiles/lr.dir/main.cpp.s
+CMakeFiles/lr.dir/src/main.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/lr.dir/src/main.cpp.s"
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/loqman/Downloads/cproj/ml-with-cpp/lr/src/main.cpp -o CMakeFiles/lr.dir/src/main.cpp.s
 
 # Object files for target lr
 lr_OBJECTS = \
-"CMakeFiles/lr.dir/main.cpp.o"
+"CMakeFiles/lr.dir/src/main.cpp.o"
 
 # External object files for target lr
 lr_EXTERNAL_OBJECTS =
 
-lr: CMakeFiles/lr.dir/main.cpp.o
+lr: CMakeFiles/lr.dir/src/main.cpp.o
 lr: CMakeFiles/lr.dir/build.make
 lr: CMakeFiles/lr.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/loqman/Downloads/cproj/ml-with-cpp/lr/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable lr"

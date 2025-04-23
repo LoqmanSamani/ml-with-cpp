@@ -11,14 +11,9 @@ set(CMAKE_MAKEFILE_DEPENDS
   "CMakeFiles/3.28.3/CMakeCCompiler.cmake"
   "CMakeFiles/3.28.3/CMakeCXXCompiler.cmake"
   "CMakeFiles/3.28.3/CMakeSystem.cmake"
-  "/home/loqman/Downloads/cproj/vcpkg/installed/x64-linux/share/eigen3/Eigen3Config.cmake"
-  "/home/loqman/Downloads/cproj/vcpkg/installed/x64-linux/share/eigen3/Eigen3ConfigVersion.cmake"
-  "/home/loqman/Downloads/cproj/vcpkg/installed/x64-linux/share/eigen3/Eigen3Targets.cmake"
-  "/home/loqman/Downloads/cproj/vcpkg/scripts/buildsystems/vcpkg.cmake"
   "/usr/share/cmake-3.28/Modules/CMakeCInformation.cmake"
   "/usr/share/cmake-3.28/Modules/CMakeCXXInformation.cmake"
   "/usr/share/cmake-3.28/Modules/CMakeCommonLanguageInclude.cmake"
-  "/usr/share/cmake-3.28/Modules/CMakeDependentOption.cmake"
   "/usr/share/cmake-3.28/Modules/CMakeGenericSystem.cmake"
   "/usr/share/cmake-3.28/Modules/CMakeInitializeConfigs.cmake"
   "/usr/share/cmake-3.28/Modules/CMakeLanguageInformation.cmake"
@@ -34,6 +29,9 @@ set(CMAKE_MAKEFILE_DEPENDS
   "/usr/share/cmake-3.28/Modules/Platform/Linux-Initialize.cmake"
   "/usr/share/cmake-3.28/Modules/Platform/Linux.cmake"
   "/usr/share/cmake-3.28/Modules/Platform/UnixPaths.cmake"
+  "/usr/share/eigen3/cmake/Eigen3Config.cmake"
+  "/usr/share/eigen3/cmake/Eigen3ConfigVersion.cmake"
+  "/usr/share/eigen3/cmake/Eigen3Targets.cmake"
   )
 
 # The corresponding makefile is:

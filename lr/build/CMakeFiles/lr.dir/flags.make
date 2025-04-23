@@ -4,7 +4,7 @@
 # compile CXX with /usr/bin/g++
 CXX_DEFINES = 
 
-CXX_INCLUDES = -isystem /home/loqman/Downloads/cproj/vcpkg/installed/x64-linux/include/eigen3
+CXX_INCLUDES = -isystem /usr/include/eigen3
 
 CXX_FLAGS = -g -std=gnu++17
 

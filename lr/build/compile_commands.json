@@ -1,8 +1,8 @@
 [
 {
   "directory": "/home/loqman/Downloads/cproj/ml-with-cpp/lr/build",
-  "command": "/usr/bin/g++  -isystem /home/loqman/Downloads/cproj/vcpkg/installed/x64-linux/include/eigen3 -g -std=gnu++17 -o CMakeFiles/lr.dir/main.cpp.o -c /home/loqman/Downloads/cproj/ml-with-cpp/lr/main.cpp",
-  "file": "/home/loqman/Downloads/cproj/ml-with-cpp/lr/main.cpp",
-  "output": "CMakeFiles/lr.dir/main.cpp.o"
+  "command": "/usr/bin/g++  -isystem /usr/include/eigen3 -g -std=gnu++17 -o CMakeFiles/lr.dir/src/main.cpp.o -c /home/loqman/Downloads/cproj/ml-with-cpp/lr/src/main.cpp",
+  "file": "/home/loqman/Downloads/cproj/ml-with-cpp/lr/src/main.cpp",
+  "output": "CMakeFiles/lr.dir/src/main.cpp.o"
 }
 ]

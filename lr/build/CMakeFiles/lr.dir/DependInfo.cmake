@@ -8,7 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/home/loqman/Downloads/cproj/ml-with-cpp/lr/main.cpp" "CMakeFiles/lr.dir/main.cpp.o" "gcc" "CMakeFiles/lr.dir/main.cpp.o.d"
+  "/home/loqman/Downloads/cproj/ml-with-cpp/lr/src/main.cpp" "CMakeFiles/lr.dir/src/main.cpp.o" "gcc" "CMakeFiles/lr.dir/src/main.cpp.o.d"
   )
 
 # Targets to which this target links which contain Fortran sources.
