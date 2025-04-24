@@ -1,12 +1,15 @@
 #ifndef DATA_PREP_HPP
 #define DATA_PREP_HPP
 
+#include <Eigen/Dense>
+#include <vector>
+#include <fstream>
+#include <sstream>
+#include <string>
 
 
 
 
-
-// updated function to load your modified Boston Housing dataset
 bool load_boston_housing(const std::string& filename, Eigen::MatrixXd& X, Eigen::VectorXd& y) {
 
     std::ifstream file(filename);
@@ -17,9 +20,7 @@ bool load_boston_housing(const std::string& filename, Eigen::MatrixXd& X, Eigen:
 
     std::vector<std::vector<double>> data;
     std::string line;
-
-    // skip header
-    std::getline(file, line); // assumes header: RM,LSTAT,PTRATIO,MEDV
+    std::getline(file, line); // Skip header: RM,LSTAT,PTRATIO,MEDV
 
     while (std::getline(file, line)) {
         std::stringstream ss(line);
@@ -35,7 +36,7 @@ bool load_boston_housing(const std::string& filename, Eigen::MatrixXd& X, Eigen:
             }
         }
 
-        if (row.size() == 4) { // 3 features + 1 target
+        if (row.size() == 4) {
             data.push_back(row);
         } else {
             std::cerr << "Warning: Skipping row with " << row.size() << " columns\n";
@@ -49,41 +50,37 @@ bool load_boston_housing(const std::string& filename, Eigen::MatrixXd& X, Eigen:
         return false;
     }
 
-    int n_samples = data.size();
-    int n_features = data[0].size() - 1; // 3 features
-    X.resize(n_samples, n_features);
-    y.resize(n_samples);
+    X.resize(data.size(), data[0].size() - 1);
+    y.resize(data.size());
 
+    for (size_t i = 0; i < data.size(); ++i) {
 
-    for (int i = 0; i < n_samples; ++i) {
-        for (int j = 0; j < n_features; ++j) {
+        for (size_t j = 0; j < data[0].size() - 1; ++j) {
             X(i, j) = data[i][j];
         }
-        y(i) = data[i][n_features];
+        y(i) = data[i][data[0].size() - 1];
     }
 
     return true;
 }
 
 
-
-// function to standardize features and scale target
 void standardize(Eigen::MatrixXd& X, Eigen::VectorXd& y) {
 
-    // standardize X: (X - mean) / std
-    for (int j = 0; j < X.cols(); ++j) {
+    for (Eigen::Index j = 0; j < X.cols(); ++j) {
+
         double mean = X.col(j).mean();
-        double std = std::sqrt((X.col(j).array() - mean).square().sum() / X.rows());
+        double std = std::sqrt((X.col(j).array() - mean).square().mean());
+
         if (std > 0) {
             X.col(j) = (X.col(j).array() - mean) / std;
         } else {
-            X.col(j).setZero(); // Avoid division by zero
+            X.col(j).setZero();
         }
     }
 
-    // scale y: (y - mean) / std (to handle large MEDV values)
     double y_mean = y.mean();
-    double y_std = std::sqrt((y.array() - y_mean).square().sum() / y.size());
+    double y_std = std::sqrt((y.array() - y_mean).square().mean());
 
     if (y_std > 0) {
         y = (y.array() - y_mean) / y_std;
@@ -93,5 +90,52 @@ void standardize(Eigen::MatrixXd& X, Eigen::VectorXd& y) {
 }
 
 
+void plot_losses(const std::vector<double>& losses, const std::string& filename,
+                 const std::string& title = "Training Loss Over Epochs",
+                 const std::string& xlabel = "Epoch",
+                 const std::string& ylabel = "Mean Squared Error") {
+    
+    if (losses.empty()) {
+        throw std::runtime_error("No losses to plot");
+    }
 
-#endif
+    std::ofstream data_file("losses.dat");
+
+    if (!data_file.is_open()) {
+        throw std::runtime_error("Failed to open losses.dat for writing");
+    }
+
+    for (size_t i = 0; i < losses.size(); ++i) {
+        data_file << i << " " << losses[i] << "\n"; // Epoch, Loss
+    }
+
+    data_file.close();
+
+    std::ofstream script("plot.gp");
+
+    if (!script.is_open()) {
+        throw std::runtime_error("Failed to open plot.gp for writing");
+    }
+
+    script << "set terminal png size 800,600\n"; 
+    script << "set output '" << filename << "'\n"; 
+    script << "set title '" << title << "'\n"; 
+    script << "set xlabel '" << xlabel << "'\n"; 
+    script << "set ylabel '" << ylabel << "'\n"; 
+    script << "set grid\n";
+    script << "plot 'losses.dat' with lines title 'Loss' lw 2\n"; 
+    script.close();
+
+    int result = system("/gnuplot plot.gp");
+
+    if (result != 0) {
+        throw std::runtime_error("Gnuplot execution failed");
+    }
+
+
+    std::cout << "Gnuplot saved to " << filename << std::endl;
+}
+
+
+
+#endif // DATA_PREP_HPP

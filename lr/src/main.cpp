@@ -1,27 +1,19 @@
 #include <iostream>
 #include <Eigen/Dense>
 #include <stdexcept>
-#include <random>
-#include <map>
-#include <vector>
 #include <fstream>
-#include <sstream>
-#include <string>
 #include "data_prep.hpp"
 #include "utils.hpp"
 
 
 
-
-
-// train a linear regression model
-
 int main() {
+
     try {
         // load Boston Housing dataset
         Eigen::MatrixXd X;
         Eigen::VectorXd y;
-        std::string filename = "../src/housing.csv"; // Adjust path to your CSV
+        std::string filename = "../src/housing.csv";
         if (!load_boston_housing(filename, X, y)) {
             throw std::runtime_error("Failed to load dataset");
         }
@@ -34,9 +26,19 @@ int main() {
         std::cout << "First 5 rows of X:\n" << X.topRows(5) << "\n\n";
         std::cout << "First 5 values of y:\n" << y.head(5) << "\n\n";
 
-        // train model
-        Train trainer;
-        trainer.trainer(X, y, 5000, 0.1, 100);
+        // train model with mini-batches
+        Train trainer(0.2, 42);
+        trainer.trainer(X, y, 1500, 50, 0.003, 100);
+
+        // visualize training losses using Gnuplot
+        plot_losses(trainer.losses, "lr_loss_plot.png", "Training Loss Over Epochs (Linear Regression)",
+                    "Epoch", "Mean Squared Error");
+
+        // save losses to CSV as fallback
+        std::ofstream out("losses.csv");
+        for (double loss : trainer.losses) out << loss << "\n";
+        out.close();
+        std::cout << "Losses saved to losses.csv\n";
 
         // final predictions
         ForwardLR ford;
