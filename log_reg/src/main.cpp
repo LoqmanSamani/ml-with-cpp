@@ -20,7 +20,7 @@ int main() {
 
         dp.split_data(data, train_data, test_data, val_data, true);
 
-        Train t(5000, 0.007, 100, 100, 50, 10, true, 0.1, true, 42);
+        Train t(15000, 0.007, 1000, 1000, 100, 10, true, 0.001, 0.1, true, 32);
 
         t.trainer(train_data, val_data, test_data, true);
 

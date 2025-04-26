@@ -94,39 +94,50 @@ class LogLoss {
 
     public:
 
-      double forward(const Eigen::VectorXd& y, const Eigen::VectorXd& y_hat) const {
+        LogLoss(double lambda = 0.0) : lambda(lambda) {}
 
-        if (y.size() != y_hat.size()) {
-          throw std::runtime_error("Shape Mismatch: y.size(): " +
-            std::to_string(y.size()) + " != y_hat.size(): " +
-            std::to_string(y_hat.size()));
-        }
-        
-        Eigen::VectorXd l = -(y.array() * y_hat.array().log() + (1.0 - y.array()) * (1.0 - y_hat.array()).log());
-        
-        return l.sum() / y.size();
-      }
-      
-      Eigen::VectorXd backward(const Eigen::MatrixXd& X, const Eigen::VectorXd& y_hat, const Eigen::VectorXd& y) const {
+        double forward(const Eigen::VectorXd& y, const Eigen::VectorXd& y_hat, const Eigen::VectorXd& w) const {
 
-        if (X.rows() != y_hat.size() || y_hat.size() != y.size()) {
-
-          throw std::runtime_error("Shape Mismatch: X.rows(): " + 
-                std::to_string(X.rows()) + " y.size(): " + 
-                std::to_string(y.size()) + " y_hat.size(): " +
+            if (y.size() != y_hat.size()) {
+            throw std::runtime_error("Shape Mismatch: y.size(): " +
+                std::to_string(y.size()) + " != y_hat.size(): " +
                 std::to_string(y_hat.size()));
-        }
+            }
 
-        if (X.size() == 0 || y.size() == 0 || y_hat.size() == 0) {
-
-          throw std::runtime_error("At least one input is empty! X.size(): " + 
-                std::to_string(X.size()) + " y.size(): " + 
-                std::to_string(y.size()) + " y_hat.size(): " +
-                std::to_string(y_hat.size()));
+            // l2 regularization term
+            double l2 = w.squaredNorm() * (lambda/2);
+            
+            // binary cross entropy loss
+            Eigen::VectorXd l = -(y.array() * y_hat.array().log() + (1.0 - y.array()) * (1.0 - y_hat.array()).log());
+            
+            return l.sum() / y.size() + l2;
         }
         
-        return (y_hat - y) / y.size();
-      }
+        Eigen::VectorXd backward(const Eigen::MatrixXd& X, const Eigen::VectorXd& y_hat, const Eigen::VectorXd& y) const {
+
+            if (X.rows() != y_hat.size() || y_hat.size() != y.size()) {
+
+            throw std::runtime_error("Shape Mismatch: X.rows(): " + 
+                    std::to_string(X.rows()) + " y.size(): " + 
+                    std::to_string(y.size()) + " y_hat.size(): " +
+                    std::to_string(y_hat.size()));
+            }
+
+            if (X.size() == 0 || y.size() == 0 || y_hat.size() == 0) {
+
+            throw std::runtime_error("At least one input is empty! X.size(): " + 
+                    std::to_string(X.size()) + " y.size(): " + 
+                    std::to_string(y.size()) + " y_hat.size(): " +
+                    std::to_string(y_hat.size()));
+            }
+
+            //Eigen::VectorXd dl2 = lambda_ * w.array();
+            
+            return (y_hat - y)  / y.size();
+        }
+
+    private:
+        double lambda;
 };
 
 
@@ -177,9 +188,9 @@ class Train {
         
         Train(
             int epochs = 1000, double lr = 0.01, int val_freq = 100, int loss_freq = 100, int train_batch_size = 100,
-            int val_batch_size = 50, bool use_val = false, double scaling_factor = 0.2, bool normalize = true, unsigned int seed = 42): 
+            int val_batch_size = 50, bool use_val = false, double lambda_ = 0.01, double scaling_factor = 0.2, bool normalize = true, unsigned int seed = 42): 
             epochs(epochs), lr(lr), val_freq(val_freq), train_batch_size(train_batch_size), val_batch_size(val_batch_size), 
-            loss_freq(loss_freq), use_val(use_val), scaling_factor(scaling_factor), normalize(normalize), seed(seed) {}
+            loss_freq(loss_freq), use_val(use_val), lambda_(lambda_), scaling_factor(scaling_factor), normalize(normalize), seed(seed) {}
 
         void trainer(Eigen::MatrixXd& train_data, Eigen::MatrixXd& val_data, Eigen::MatrixXd& test_data, bool test = false) {
 
@@ -218,11 +229,12 @@ class Train {
             ComputeZ ford;
             Sigmoid act;
             Params par(train_data.cols()-1, scaling_factor, seed);
-            LogLoss cost;
+            LogLoss cost(lambda_);
 
             // initialize parameters and losses
             par.init_params(params);
             losses.reserve(epochs);
+            //val_losses.reserve(epochs / val_freq + 1);
 
             // calculate number of iteration in each epoch
             int num_train_iters = (train_data.rows() + train_batch_size - 1) / train_batch_size;
@@ -269,13 +281,17 @@ class Train {
                     // forward propagation
                     Eigen::VectorXd z = ford.forward(X_batch, params["w"], params["b"]);
                     Eigen::VectorXd y_hat = act.forward(z);
-                    double loss = cost.forward(y_batch, y_hat);
+                    double loss = cost.forward(y_batch, y_hat, params["w"]);
 
                     // backward propagation
                     Eigen::VectorXd dy_hat = cost.backward(X_batch, y_hat, y_batch); 
                     Eigen::VectorXd dz = act.backward(y_hat).array() * dy_hat.array();
                     std::map<std::string, Eigen::VectorXd> grads = ford.backward(dz, X_batch);
 
+                    
+                    // add l2 regularization gradient to dw
+                    grads["dw"] += lambda_ * params["w"];
+                    
                     // update parameters
                     par.update(params, grads, lr);
 
@@ -310,7 +326,7 @@ class Train {
 
                         Eigen::VectorXd z = ford.forward(X_batch, params["w"], params["b"]);
                         Eigen::VectorXd y_hat = act.forward(z);
-                        val_loss += cost.forward(y_batch, y_hat);
+                        val_loss += cost.forward(y_batch, y_hat, params["w"]);
 
                         start = end;
                         end = std::min(end + val_batch_size, static_cast<int>(val_data.rows()));
@@ -341,7 +357,7 @@ class Train {
                 Eigen::VectorXd z_test = ford.forward(X_test, params["w"], params["b"]);
                 Eigen::VectorXd y_hat_test = act.forward(z_test);
 
-                double test_loss = cost.forward(y_test, y_hat_test);
+                double test_loss = cost.forward(y_test, y_hat_test, params["w"]);
 
                 std::cout << "Test Loss: " << test_loss << std::endl;
             }
@@ -372,6 +388,7 @@ class Train {
         int val_batch_size; 
         int loss_freq;
         bool normalize;
+        double lambda_;
 
         std::vector<double> losses;
         std::vector<double> val_losses;
