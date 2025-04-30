@@ -10,4 +10,4 @@ find_package(Eigen3 REQUIRED NO_MODULE)
 add_executable(dtree src/main.cpp)
 
 # Link libraries
-target_link_libraries(decision_tree PRIVATE Eigen3::Eigen)
+target_link_libraries(dtree PRIVATE Eigen3::Eigen)
